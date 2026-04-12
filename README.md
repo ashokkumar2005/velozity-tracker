@@ -1,13 +1,14 @@
 # 🚀 Velozity — Multi-View Project Tracker
 
 A high-performance **project management UI** built with **React, TypeScript, Tailwind CSS, and Zustand**.
-Designed to handle large datasets smoothly with custom implementations for virtual scrolling and drag-and-drop.
+
+Designed to handle **large-scale datasets efficiently**, featuring custom-built solutions for **virtual scrolling** and **drag-and-drop interactions** — without relying on heavy external libraries.
 
 ---
 
-## 🌐 Live Demo
+# 🌐 Live Demo
 
-Deploy easily using Vercel:
+Deploy instantly using Vercel:
 
 ```bash
 npm install
@@ -17,7 +18,7 @@ vercel --prod
 
 ---
 
-## ⚙️ Setup Instructions
+# ⚙️ Setup Instructions
 
 ```bash
 # Install dependencies
@@ -37,153 +38,200 @@ npm run preview
 
 ---
 
-## 🧠 State Management — Why Zustand?
+# 🧠 State Management — Why Zustand?
 
-I chose **Zustand** over React Context + useReducer for simplicity and performance:
+Zustand was chosen for its **performance, simplicity, and scalability**.
 
-* ✅ **Minimal boilerplate** — no providers, reducers, or action types
-* 🎯 **Selective subscriptions** — components only re-render when needed
-* 🧮 **Built-in derived state** — logic like filtering & sorting lives inside the store
-* ⚡ **Scales cleanly** — perfect for medium-complex apps without Redux overhead
+### ✅ Advantages
 
-Compared to Context + useReducer:
+* Minimal boilerplate (no reducers or action types)
+* No provider wrapping required
+* Selective subscriptions (optimized re-renders)
+* Built-in support for derived state
+* Clean scaling for mid-to-large applications
 
-* ❌ Requires Provider wrapping
-* ❌ Adds dispatch complexity
-* ❌ Lacks efficient selector-based updates
+### ⚖️ Compared to Context + useReducer
 
----
-
-## 📜 Virtual Scrolling (Custom Implementation)
-
-The `ListView` handles **500+ tasks efficiently** without external libraries:
-
-* Uses a full-height spacer (`tasks.length × ROW_HEIGHT`)
-* Renders only visible rows based on scroll position
-* Positions items using absolute positioning (`top = index × ROW_HEIGHT`)
-* Tracks container size using `ResizeObserver`
-* Fixed row height (`56px`) ensures **O(1) calculations**
-
-✅ Result: Smooth scrolling, no flickering, no blank gaps
+| Context + useReducer       | Zustand                    |
+| -------------------------- | -------------------------- |
+| Requires Providers         | No Providers               |
+| Dispatch-based logic       | Direct state updates       |
+| Re-renders more components | Fine-grained subscriptions |
+| More boilerplate           | Lightweight                |
 
 ---
 
-## 🧲 Drag-and-Drop (From Scratch)
+# 📜 Virtual Scrolling (Custom Implementation)
 
-Implemented using **native HTML5 Drag Events**:
+Efficiently handles **500+ tasks** without external libraries.
 
-### Flow:
+### 🔧 How It Works
+
+* Full-height spacer → `tasks.length × ROW_HEIGHT`
+* Renders only visible rows
+* Absolute positioning → `top = index × ROW_HEIGHT`
+* Uses `ResizeObserver` for container tracking
+* Fixed row height (`56px`) enables **O(1) calculations**
+
+### ✅ Result
+
+* Smooth scrolling
+* No flickering
+* No empty gaps
+* High performance even with large datasets
+
+---
+
+# 🧲 Drag-and-Drop (From Scratch)
+
+Built using **native HTML5 Drag Events** — no external libraries.
+
+### 🔄 Flow
 
 1. **Drag Start**
 
-   * Store task ID using `useRef`
-   * Apply opacity for visual feedback
+   * Store task ID via `useRef`
+   * Apply opacity for feedback
 
 2. **Drag Over**
 
-   * Detect cursor position
-   * Dynamically calculate insertion point
+   * Track cursor position
+   * Calculate insertion index dynamically
 
-3. **Placeholder**
+3. **Placeholder Rendering**
 
-   * Rendered via React state (NOT direct DOM manipulation)
-   * Prevents layout jitter
+   * Controlled via React state (`placeholderAfter`)
+   * Avoids direct DOM manipulation
 
 4. **Drop**
 
    * Calls Zustand `moveTask()` to update state
 
-5. **Snap-back**
+5. **Snap-back Behavior**
 
-   * If dropped outside → no state change
-   * Smooth return via CSS transition
+   * No drop target → no state change
+   * Smooth return animation
 
 6. **Touch Support**
 
    * Custom `useTouchDrag` hook
-   * Converts touch gestures into drag actions
+   * Converts gestures into drag interactions
 
 ---
 
-## 🧩 Hardest Problem Solved
+# 🧩 Hardest Problem Solved
 
-### Drag Placeholder Without Layout Shift
+## Drag Placeholder Without Layout Shift
 
-**Problem:**
-Direct DOM insertion caused layout jitter during drag.
+### ❌ Problem
 
-**Solution:**
+Direct DOM insertion caused layout jitter and unstable UI.
 
-* Controlled placeholder using React state (`placeholderAfter`)
-* Rendered inside JSX instead of DOM mutation
-* React batching ensures smooth updates
+### ✅ Solution
 
-✅ Result:
+* Placeholder managed via React state
+* Rendered declaratively inside JSX
+* Leveraged React batching for smooth updates
 
-* No jitter
+### 🎯 Result
+
 * No layout shift
-* Smooth UX
+* No jitter
+* Seamless drag experience
 
 ---
 
-## 🔧 Future Refactor
+# 🔧 Future Improvements
 
-The `TimelineView` currently recalculates bar positions on every render.
-
-### Planned improvements:
-
-* Memoize calculations using `useMemo`
+* Memoize `TimelineView` calculations (`useMemo`)
 * Cache month boundaries
-* Extract header into a memoized component
+* Extract header into memoized components
+* Add keyboard accessibility for drag-and-drop
+* Introduce unit and performance tests
 
 ---
 
-## 📊 Performance
+# 📊 Performance
 
-**Lighthouse Score:**
-🔥 **92 Performance (Desktop)**
+🔥 **Lighthouse Score: 92 (Desktop)**
 
-To test:
+### Run Performance Test
 
 ```bash
 npm run build
 npm run preview
 ```
 
-Then open Chrome DevTools → Lighthouse → Audit
+Then:
+
+* Open Chrome DevTools
+* Go to **Lighthouse**
+* Run Performance Audit
 
 ---
 
-## 🛠 Tech Stack
+# 🛠 Tech Stack
 
 * ⚛️ React 18 + TypeScript
-* 🐻 Zustand (state management)
-* 🎨 Tailwind CSS (no UI libraries)
-* ⚡ Vite (build tool)
+* 🐻 Zustand (State Management)
+* 🎨 Tailwind CSS
+* ⚡ Vite
 
-### Zero Dependencies Philosophy:
+---
+
+# 🚫 Zero-Dependency Philosophy
+
+This project intentionally avoids heavy libraries:
 
 * ❌ No drag-and-drop libraries
 * ❌ No virtual scrolling libraries
 * ❌ No UI component libraries
 
+### ✅ Why?
+
+* Full control over behavior
+* Better performance tuning
+* Deeper understanding of core concepts
+
 ---
 
-## 💡 Key Highlights
+# 💡 Key Highlights
 
 * Handles **500+ tasks efficiently**
-* Fully custom **virtual scrolling**
-* Smooth **drag-and-drop UX**
-* Clean and scalable architecture
+* Custom-built **virtual scrolling engine**
+* Smooth and responsive **drag-and-drop UX**
+* Clean, scalable architecture
 * Optimized rendering with Zustand
+* Real-world performance-focused design
 
 ---
 
-## 📌 Author Notes
+# 📌 Author Notes
 
-This project focuses on **performance, simplicity, and control** —
-building core UI systems from scratch instead of relying on heavy libraries.
+This project emphasizes:
+
+* Performance-first thinking
+* Building from first principles
+* Clean and maintainable architecture
+
+It reflects how real-world systems are designed when **performance and control matter**.
 
 ---
 
-⭐ If you like this project, consider giving it a star!
+# 👨‍💻 Author
+
+**AshokKumar T**
+
+---
+
+# ⭐ Support
+
+If you found this project useful:
+
+⭐ Star the repo
+🍴 Fork it
+📢 Share it
+
+---
+
+> 💡 *Built with performance in mind. Engineered for real-world scalability.*
